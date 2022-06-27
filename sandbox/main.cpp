@@ -1,8 +1,17 @@
+#include "SandboxApp.h"
 
-#include "Logger.h"
+#include <cstdlib>
+#include <iostream>
+#include <stdexcept>
 
 int main() {
-    Logger l;
-    l.log();
-    return 0;
+    SandboxApp app{};
+    try {
+        app.run();
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << '\n';
+        return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
+
 }
