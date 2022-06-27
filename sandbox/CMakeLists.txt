@@ -3,7 +3,7 @@ project(cr8_games_sandbox)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(cr8_games_sandbox main.cpp)
+add_executable(cr8_games_sandbox main.cpp SandboxApp.cpp SandboxApp.h)
 
 target_link_libraries(${PROJECT_NAME}
         PRIVATE
