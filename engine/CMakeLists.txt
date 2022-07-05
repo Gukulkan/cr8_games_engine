@@ -3,8 +3,8 @@ project(engine VERSION 1.0.1 DESCRIPTION "CR8 Engine core")
 
 set(CMAKE_CXX_STANDARD 23)
 
-set(VULKAN_SDK_PATH "path/to/vulkan")
-set(GLFW_PATH "path/to/glfw")
+set(VULKAN_SDK_PATH /Users/gukulkan/VulkanSDK/1.3.216.0/macOS)
+set(GLFW_PATH /usr/local/Cellar/glfw/3.3.7)
 
 
 if (DEFINED VULKAN_SDK_PATH)
@@ -43,6 +43,7 @@ add_library(${PROJECT_NAME}
         EngineWindow.cpp EngineWindow.h
         EnginePipeline.cpp EnginePipeline.h
         EngineDevice.cpp EngineDevice.h
+        EngineSwapChain.cpp EngineSwapChain.h
         )
 
 target_include_directories(${PROJECT_NAME}
