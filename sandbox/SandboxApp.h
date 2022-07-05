@@ -4,23 +4,37 @@
 #include "EngineDevice.h"
 #include "EngineWindow.h"
 #include "EnginePipeline.h"
+#include "EngineSwapChain.h"
+
+#include <memory>
+#include <vector>
 
 class SandboxApp {
 public:
     static constexpr int WIDTH = 800;
     static constexpr int HEIGHT = 600;
 
+    SandboxApp();
+    ~SandboxApp();
+
+    SandboxApp(const SandboxApp &) = delete;
+    SandboxApp &operator=(const SandboxApp &) = delete;
+
     void run();
 
 private:
+    void createPipelineLayout();
+    void createPipeline();
+    void createCommandBuffers();
+    void drawFrame();
+
     EngineWindow engineWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
     EngineDevice engineDevice{engineWindow};
-    EnginePipeline enginePipeline{
-            engineDevice,
-            "shader/simple_shader.vert.spv",
-            "shader/simple_shader.frag.spv",
-            EnginePipeline::defaultPipelineConfigInfo(WIDTH, HEIGHT)
-    };
+    EngineSwapChain engineSwapChain{engineDevice, engineWindow.getExtent()};
+    std::unique_ptr<EnginePipeline> enginePipeline;
+    VkPipelineLayout pipelineLayout;
+    std::vector<VkCommandBuffer> commandBuffers;
+
 };
 
 
