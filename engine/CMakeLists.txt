@@ -3,17 +3,17 @@ project(engine VERSION 1.0.1 DESCRIPTION "CR8 Engine core")
 
 set(CMAKE_CXX_STANDARD 23)
 
-set(VULKAN_SDK_PATH "path/to/vulkan")
-set(GLFW_PATH "path/to/glfw")
+set(VULKAN_SDK_PATH /Users/gukulkan/VulkanSDK/1.3.216.0/macOS)
+set(GLFW_PATH /usr/local/Cellar/glfw/3.3.7)
 
 
 if (DEFINED VULKAN_SDK_PATH)
     message(STATUS "Found DEFINED Vulkan: ${VULKAN_SDK_PATH}")
-    set(Vulkan_INCLUDE_DIRS "${VULKAN_SDK_PATH}/include") # 1.1 Make sure this include path is correct
-    set(Vulkan_LIBRARIES "${VULKAN_SDK_PATH}/lib") # 1.2 Make sure lib path is correct
+    set(Vulkan_INCLUDE_DIRS "${VULKAN_SDK_PATH}/include")
+    set(Vulkan_LIBRARIES "${VULKAN_SDK_PATH}/lib") 
     set(Vulkan_FOUND "True")
 else()
-    find_package(Vulkan REQUIRED FATAL_ERROR) # throws error if could not find Vulkan
+    find_package(Vulkan REQUIRED FATAL_ERROR)
     message(STATUS "Found Vulkan: ${VULKAN_SDK}")
 endif()
 if (NOT Vulkan_FOUND)
@@ -41,6 +41,9 @@ endif()
 
 add_library(${PROJECT_NAME}
         EngineWindow.cpp EngineWindow.h
+        EnginePipeline.cpp EnginePipeline.h
+        EngineDevice.cpp EngineDevice.h
+        EngineSwapChain.cpp EngineSwapChain.h
         )
 
 target_include_directories(${PROJECT_NAME}
@@ -58,7 +61,7 @@ target_link_directories(${PROJECT_NAME} PUBLIC
         ${GLFW_LIB}
         )
 
-target_link_libraries(${PROJECT_NAME} glfw ${Vulkan_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} glfw vulkan)
 
 
 target_compile_features(${PROJECT_NAME}

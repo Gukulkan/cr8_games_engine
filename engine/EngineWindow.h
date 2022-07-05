@@ -1,7 +1,6 @@
 #pragma once
 
-#define GLFW_INCLUDE_VULKAN
-
+#include "vulkan/vulkan.h"
 #include <GLFW/glfw3.h>
 
 #include <string>
@@ -13,10 +12,12 @@ public:
     ~EngineWindow();
 
     EngineWindow(const EngineWindow &) = delete;
-
     EngineWindow &operator=(const EngineWindow &) = delete;
 
     bool shouldClose() { return glfwWindowShouldClose(window); }
+    VkExtent2D getExtent() { return {static_cast<uint32_t>(width),static_cast<uint32_t>(height)};}
+
+    void createWindowSurface(VkInstance instance, VkSurfaceKHR *surface);
 
 private:
     void initWindow();
