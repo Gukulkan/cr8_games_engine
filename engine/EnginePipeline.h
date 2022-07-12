@@ -23,31 +23,32 @@ struct PipelineConfigInfo {
 
 class EnginePipeline {
 public:
-    EnginePipeline(      EngineDevice& device,
-                         const std::string& vertFilepath,
-                         const std::string& fragFilepath,
-                         const PipelineConfigInfo& configInfo);
+    EnginePipeline(EngineDevice &device,
+                   const std::string &vertFilepath,
+                   const std::string &fragFilepath,
+                   const PipelineConfigInfo &configInfo);
+
     ~EnginePipeline();
 
+    EnginePipeline(const EnginePipeline &) = delete;
 
-    EnginePipeline(const EnginePipeline&) = delete;
-    void operator=(const EnginePipeline&) = delete;
+    EnginePipeline &operator=(const EnginePipeline &) = delete;
 
     void bind(VkCommandBuffer commandBuffer);
 
     static PipelineConfigInfo defaultPipelineConfigInfo(uint32_t width, uint32_t height);
 
 private:
-    static std::vector<char> readFile(const std::string& filepath);
+    static std::vector<char> readFile(const std::string &filepath);
 
     void createGraphicsPipeline(
-            const std::string& vertFilepath,
-            const std::string& fragFilepath,
-            const PipelineConfigInfo& configInfo);
+            const std::string &vertFilepath,
+            const std::string &fragFilepath,
+            const PipelineConfigInfo &configInfo);
 
-    void createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule);
+    void createShaderModule(const std::vector<char> &code, VkShaderModule *shaderModule);
 
-    EngineDevice& engineDevice;
+    EngineDevice &engineDevice;
     VkPipeline graphicsPipeline;
     VkShaderModule vertShaderModule;
     VkShaderModule fragShaderModule;

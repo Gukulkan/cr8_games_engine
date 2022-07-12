@@ -1,4 +1,5 @@
 #include "EnginePipeline.h"
+#include "EngineModel.h"
 
 #include <cassert>
 #include <fstream>
@@ -36,9 +37,9 @@ std::vector<char> EnginePipeline::readFile(const std::string &filepath) {
     return buffer;
 }
 
-void EnginePipeline::createGraphicsPipeline(const std::string& vertFilepath,
-                                            const std::string& fragFilepath,
-                                            const PipelineConfigInfo& configInfo) {
+void EnginePipeline::createGraphicsPipeline(const std::string &vertFilepath,
+                                            const std::string &fragFilepath,
+                                            const PipelineConfigInfo &configInfo) {
     assert(
             configInfo.pipelineLayout != VK_NULL_HANDLE &&
             "Cannot create graphics pipeline: no pipelineLayout provided in configInfo");
@@ -70,12 +71,16 @@ void EnginePipeline::createGraphicsPipeline(const std::string& vertFilepath,
     shaderStages[1].pNext = nullptr;
     shaderStages[1].pSpecializationInfo = nullptr;
 
+    auto bindingDescriptions = EngineModel::Vertex::getBindingDescriptions();
+    auto attributeDescriptions = EngineModel::Vertex::getAttributeDescriptions();
+
     VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
     vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-    vertexInputInfo.vertexAttributeDescriptionCount = 0;
-    vertexInputInfo.vertexBindingDescriptionCount = 0;
-    vertexInputInfo.pVertexAttributeDescriptions = nullptr;
-    vertexInputInfo.pVertexBindingDescriptions = nullptr;
+    vertexInputInfo.vertexAttributeDescriptionCount =
+            static_cast<uint32_t>(attributeDescriptions.size());
+    vertexInputInfo.vertexBindingDescriptionCount = static_cast<uint32_t>(bindingDescriptions.size());
+    vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions.data();
+    vertexInputInfo.pVertexBindingDescriptions = bindingDescriptions.data();
 
     VkPipelineViewportStateCreateInfo viewportInfo{};
     viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
@@ -115,11 +120,11 @@ void EnginePipeline::createGraphicsPipeline(const std::string& vertFilepath,
     }
 }
 
-void EnginePipeline::createShaderModule(const std::vector<char>& code, VkShaderModule* shaderModule) {
+void EnginePipeline::createShaderModule(const std::vector<char> &code, VkShaderModule *shaderModule) {
     VkShaderModuleCreateInfo createInfo{};
     createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
     createInfo.codeSize = code.size();
-    createInfo.pCode = reinterpret_cast<const uint32_t*>(code.data());
+    createInfo.pCode = reinterpret_cast<const uint32_t *>(code.data());
 
     if (vkCreateShaderModule(engineDevice.device(), &createInfo, nullptr, shaderModule) != VK_SUCCESS) {
         throw std::runtime_error("failed to create shader module");

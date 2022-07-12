@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 SandboxApp::SandboxApp() {
+    loadModels();
     createPipelineLayout();
     createPipeline();
     createCommandBuffers();
@@ -20,6 +21,14 @@ void SandboxApp::run() {
     }
 
     vkDeviceWaitIdle(engineDevice.device());
+}
+
+void SandboxApp::loadModels() {
+    std::vector<EngineModel::Vertex> vertices{
+            {{0.0f,  -0.5f}, {1.0f, 0.0f, 0.0f}},
+            {{0.5f,  0.5f},  {0.0f, 1.0f, 0.0f}},
+            {{-0.5f, 0.5f},  {0.0f, 0.0f, 1.0f}}};
+    engineModel = std::make_unique<EngineModel>(engineDevice, vertices);
 }
 
 void SandboxApp::createPipelineLayout() {
@@ -86,7 +95,9 @@ void SandboxApp::createCommandBuffers() {
         vkCmdBeginRenderPass(commandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
         enginePipeline->bind(commandBuffers[i]);
-        vkCmdDraw(commandBuffers[i], 3, 1, 0, 0);
+
+        engineModel->bind(commandBuffers[i]);
+        engineModel->draw(commandBuffers[i]);
 
         vkCmdEndRenderPass(commandBuffers[i]);
         if (vkEndCommandBuffer(commandBuffers[i]) != VK_SUCCESS) {

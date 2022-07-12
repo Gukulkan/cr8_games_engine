@@ -35,3 +35,7 @@
 # idea
 .idea/
 cmake-build-debug/
+
+
+#OS
+.DS_Store

@@ -44,7 +44,7 @@ add_library(${PROJECT_NAME}
         EnginePipeline.cpp EnginePipeline.h
         EngineDevice.cpp EngineDevice.h
         EngineSwapChain.cpp EngineSwapChain.h
-        )
+        EngineModel.cpp EngineModel.h)
 
 target_include_directories(${PROJECT_NAME}
         PUBLIC

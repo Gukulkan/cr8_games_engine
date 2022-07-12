@@ -141,7 +141,7 @@ void EngineDevice::createLogicalDevice() {
     QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
 
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
-    std::set<uint32_t> uniqueQueueFamilies = {indices.graphicsFamily, indices.presentFamily};
+    std::set < uint32_t > uniqueQueueFamilies = {indices.graphicsFamily, indices.presentFamily};
 
     float queuePriority = 1.0f;
     for (uint32_t queueFamily: uniqueQueueFamilies) {
@@ -285,7 +285,7 @@ void EngineDevice::hasGflwRequiredInstanceExtensions() {
     vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensions.data());
 
     std::cout << "available extensions:" << std::endl;
-    std::unordered_set<std::string> available;
+    std::unordered_set < std::string > available;
     for (const auto &extension: extensions) {
         std::cout << "\t" << extension.extensionName << std::endl;
         available.insert(extension.extensionName);
@@ -312,7 +312,7 @@ bool EngineDevice::checkDeviceExtensionSupport(VkPhysicalDevice device) {
             &extensionCount,
             availableExtensions.data());
 
-    std::set<std::string> requiredExtensions(deviceExtensions.begin(), deviceExtensions.end());
+    std::set < std::string > requiredExtensions(deviceExtensions.begin(), deviceExtensions.end());
 
     for (const auto &extension: availableExtensions) {
         requiredExtensions.erase(extension.extensionName);
