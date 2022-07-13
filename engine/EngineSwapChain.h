@@ -16,6 +16,9 @@ public:
 
     EngineSwapChain(EngineDevice &deviceRef, VkExtent2D windowExtent);
 
+    EngineSwapChain(
+            EngineDevice &deviceRef, VkExtent2D windowExtent, std::shared_ptr<EngineSwapChain> previous);
+
     ~EngineSwapChain();
 
     EngineSwapChain(const EngineSwapChain &) = delete;
@@ -49,6 +52,8 @@ public:
     VkResult submitCommandBuffers(const VkCommandBuffer *buffers, uint32_t *imageIndex);
 
 private:
+    void init();
+
     void createSwapChain();
 
     void createImageViews();
@@ -86,6 +91,7 @@ private:
     VkExtent2D windowExtent;
 
     VkSwapchainKHR swapChain;
+    std::shared_ptr<EngineSwapChain> oldSwapChain;
 
     std::vector<VkSemaphore> imageAvailableSemaphores;
     std::vector<VkSemaphore> renderFinishedSemaphores;

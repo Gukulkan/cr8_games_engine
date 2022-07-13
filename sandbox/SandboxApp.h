@@ -34,16 +34,21 @@ private:
 
     void createCommandBuffers();
 
+    void freeCommandBuffers();
+
     void drawFrame();
+
+    void recreateSwapChain();
+
+    void recordCommandBuffer(int imageIndex);
 
     EngineWindow engineWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
     EngineDevice engineDevice{engineWindow};
-    EngineSwapChain engineSwapChain{engineDevice, engineWindow.getExtent()};
+    std::unique_ptr<EngineSwapChain> engineSwapChain;
     std::unique_ptr<EnginePipeline> enginePipeline;
     VkPipelineLayout pipelineLayout;
     std::vector<VkCommandBuffer> commandBuffers;
     std::unique_ptr<EngineModel> engineModel;
-
 };
 
 
