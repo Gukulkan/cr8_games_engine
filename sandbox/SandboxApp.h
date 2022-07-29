@@ -3,9 +3,8 @@
 
 #include "EngineDevice.h"
 #include "EngineWindow.h"
-#include "EnginePipeline.h"
-#include "EngineSwapChain.h"
-#include "EngineModel.h"
+#include "EngineGameObject.h"
+#include "EngineRenderer.h"
 
 #include <memory>
 #include <vector>
@@ -26,29 +25,13 @@ public:
     void run();
 
 private:
-    void loadModels();
-
-    void createPipelineLayout();
-
-    void createPipeline();
-
-    void createCommandBuffers();
-
-    void freeCommandBuffers();
-
-    void drawFrame();
-
-    void recreateSwapChain();
-
-    void recordCommandBuffer(int imageIndex);
+    void loadGameObjects();
 
     EngineWindow engineWindow{WIDTH, HEIGHT, "Hello Vulkan!"};
     EngineDevice engineDevice{engineWindow};
-    std::unique_ptr<EngineSwapChain> engineSwapChain;
-    std::unique_ptr<EnginePipeline> enginePipeline;
-    VkPipelineLayout pipelineLayout;
-    std::vector<VkCommandBuffer> commandBuffers;
-    std::unique_ptr<EngineModel> engineModel;
+    EngineRenderer engineRenderer{engineWindow, engineDevice};
+
+    std::vector<EngineGameObject> gameObjects;
 };
 
 

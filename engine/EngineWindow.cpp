@@ -29,8 +29,8 @@ void EngineWindow::createWindowSurface(VkInstance instance, VkSurfaceKHR *surfac
 }
 
 void EngineWindow::framebufferResizeCallback(GLFWwindow *window, int width, int height) {
-    auto lveWindow = reinterpret_cast<EngineWindow *>(glfwGetWindowUserPointer(window));
-    lveWindow->framebufferResized = true;
-    lveWindow->width = width;
-    lveWindow->height = height;
+    auto engineWindow = reinterpret_cast<EngineWindow *>(glfwGetWindowUserPointer(window));
+    engineWindow->framebufferResized = true;
+    engineWindow->width = width;
+    engineWindow->height = height;
 }
