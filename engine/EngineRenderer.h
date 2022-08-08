@@ -18,6 +18,7 @@ public:
     EngineRenderer &operator=(const EngineRenderer &) = delete;
 
     VkRenderPass getSwapChainRenderPass() const { return engineSwapChain->getRenderPass(); }
+    float getAspectRatio() const { return engineSwapChain->extentAspectRatio(); }
     bool isFrameInProgress() const { return isFrameStarted; }
 
     VkCommandBuffer getCurrentCommandBuffer() const {
