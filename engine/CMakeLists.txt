@@ -49,6 +49,7 @@ add_library(${PROJECT_NAME}
         EngineRenderer.cpp EngineRenderer.h
         EngineSimpleRenderSystem.cpp EngineSimpleRenderSystem.h
         EngineCamera.cpp EngineCamera.h
+        EngineKeyboardMovementController.cpp EngineKeyboardMovementController.h
         )
 
 target_include_directories(${PROJECT_NAME}

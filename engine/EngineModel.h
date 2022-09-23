@@ -22,7 +22,12 @@ public:
         static std::vector<VkVertexInputAttributeDescription> getAttributeDescriptions();
     };
 
-    EngineModel(EngineDevice &device, const std::vector<Vertex> &vertices);
+    struct Builder {
+        std::vector<Vertex> vertices{};
+        std::vector<uint32_t> indices{};
+    };
+
+    EngineModel(EngineDevice &device, const EngineModel::Builder &builder);
 
     ~EngineModel();
 
@@ -36,10 +41,16 @@ public:
 
 private:
     void createVertexBuffers(const std::vector<Vertex> &vertices);
+    void createIndexBuffers(const std::vector<uint32_t> &indices);
 
     EngineDevice &engineDevice;
     VkBuffer vertexBuffer;
     VkDeviceMemory vertexBufferMemory;
     uint32_t vertexCount;
+
+    bool hasIndexBuffer = false;
+    VkBuffer indexBuffer;
+    VkDeviceMemory indexBufferMemory;
+    uint32_t indexCount;
 };
 
