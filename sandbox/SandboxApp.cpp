@@ -4,12 +4,6 @@
 #include "EngineSimpleRenderSystem.h"
 #include "EngineKeyboardMovementController.h"
 
-// libs
-#define GLM_FORCE_RADIANS
-
-#define GLM_FORCE_DEPTH_ZERO_TO_ONE
-#include <glm/gtc/constants.hpp>
-
 #include <chrono>
 #include <array>
 
@@ -57,7 +51,7 @@ void SandboxApp::run() {
 }
 
 void SandboxApp::loadGameObjects() {
-    std::shared_ptr<EngineModel> engineModel = EngineModel::createModelFromFile(engineDevice, "models/smooth_vase.obj");
+    std::shared_ptr<EngineModel> engineModel = EngineModel::createModelFromFile(engineDevice, "models/colored_cube.obj");
     auto gameObj = EngineGameObject::createGameObject();
     gameObj.model = engineModel;
     gameObj.transform.translation = {.0f, .0f, 2.5f};
