@@ -51,10 +51,17 @@ void SandboxApp::run() {
 }
 
 void SandboxApp::loadGameObjects() {
-    std::shared_ptr<EngineModel> engineModel = EngineModel::createModelFromFile(engineDevice, "models/colored_cube.obj");
-    auto gameObj = EngineGameObject::createGameObject();
-    gameObj.model = engineModel;
-    gameObj.transform.translation = {.0f, .0f, 2.5f};
-    gameObj.transform.scale = glm::vec3(3.f);
-    gameObjects.push_back(std::move(gameObj));
+    std::shared_ptr<EngineModel> engineModel = EngineModel::createModelFromFile(engineDevice, "models/flat_vase.obj");
+    auto flatVase = EngineGameObject::createGameObject();
+    flatVase.model = engineModel;
+    flatVase.transform.translation = {-.5f, .5f, 2.5f};
+    flatVase.transform.scale = {3.f, 1.5f, 3.f};
+    gameObjects.push_back(std::move(flatVase));
+
+    engineModel = EngineModel::createModelFromFile(engineDevice, "models/smooth_vase.obj");
+    auto smoothVase = EngineGameObject::createGameObject();
+    smoothVase.model = engineModel;
+    smoothVase.transform.translation = {.5f, .5f, 2.5f};
+    smoothVase.transform.scale = {3.f, 1.5f, 3.f};
+    gameObjects.push_back(std::move(smoothVase));
 }
