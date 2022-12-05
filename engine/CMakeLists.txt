@@ -50,6 +50,7 @@ add_library(${PROJECT_NAME}
         EngineSimpleRenderSystem.cpp EngineSimpleRenderSystem.h
         EngineCamera.cpp EngineCamera.h
         EngineKeyboardMovementController.cpp EngineKeyboardMovementController.h
+        EngineBuffer.cpp EngineBuffer.h
         vendor/tinyobjectloader/tiny_obj_loader.h
         EngineUtils.h)
 

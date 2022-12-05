@@ -3,9 +3,15 @@
 #include "EngineWindow.h"
 #include "EngineSimpleRenderSystem.h"
 #include "EngineKeyboardMovementController.h"
+#include "EngineBuffer.h"
 
 #include <chrono>
 #include <array>
+
+struct GlobalUbo {
+    glm::mat4 projectionView{1.f};
+    glm::vec3 lightDirection = glm::normalize(glm::vec3{1.f, -3.f, -1.f});
+};
 
 SandboxApp::SandboxApp() {
     loadGameObjects();
@@ -14,6 +20,16 @@ SandboxApp::SandboxApp() {
 SandboxApp::~SandboxApp() {}
 
 void SandboxApp::run() {
+    engine::EngineBuffer globalUboBuffer{
+            engineDevice,
+            sizeof(GlobalUbo),
+            EngineSwapChain::MAX_FRAMES_IN_FLIGHT,
+            VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
+            VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
+            engineDevice.properties.limits.minUniformBufferOffsetAlignment,
+    };
+    globalUboBuffer.map();
+
     EngineSimpleRenderSystem simpleRenderSystem{engineDevice, engineRenderer.getSwapChainRenderPass()};
 
     EngineCamera camera{};
@@ -38,10 +54,18 @@ void SandboxApp::run() {
         camera.setPerspectiveProjection(glm::radians(50.f), aspect, 0.1f, 10.f);
 
         if (auto commandBuffer = engineRenderer.beginFrame()) {
+            int frameIndex = engineRenderer.getFrameIndex();
+            engine::FrameInfo frameInfo{frameIndex, frameTime, commandBuffer, camera};
+
+            // update
+            GlobalUbo ubo{};
+            ubo.projectionView = camera.getProjection() * camera.getView();
+            globalUboBuffer.writeToIndex(&ubo, frameIndex);
+            globalUboBuffer.flushIndex(frameIndex);
+
+            // render
             engineRenderer.beginSwapChainRenderPass(commandBuffer);
-
-            simpleRenderSystem.renderGameObjects(commandBuffer, gameObjects, camera);
-
+            simpleRenderSystem.renderGameObjects(frameInfo, gameObjects);
             engineRenderer.endSwapChainRenderPass(commandBuffer);
             engineRenderer.endFrame();
         }
