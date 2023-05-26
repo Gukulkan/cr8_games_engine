@@ -6,6 +6,9 @@ For now it draws only one triangle: <img width="200" alt="image" src="https://us
 
 The next steps will be introduced here.
 
+#UPD:
+After updates it can build 3d ojects and navigate around them. 
+
 ### Install
 
 Install Vulkan and GLFW
